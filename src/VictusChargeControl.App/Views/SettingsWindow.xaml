@@ -1,0 +1,145 @@
+<Window x:Class="VictusChargeControl.App.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Configuración"
+        Width="440"
+        Height="700"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BrushBg}"
+        FontFamily="Segoe UI Variable Text, Segoe UI"
+        TextOptions.TextFormattingMode="Display">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="24,22,24,8">
+                <TextBlock Text="Configuración"
+                           FontFamily="Segoe UI Variable Display, Segoe UI"
+                           FontSize="22"
+                           FontWeight="SemiBold" />
+                <TextBlock Text="Elegí el intervalo en el que querés mantener la batería."
+                           Style="{StaticResource MutedText}"
+                           Margin="0,4,0,18"
+                           TextWrapping="Wrap" />
+
+                <Border Style="{StaticResource CardBorder}">
+                    <StackPanel>
+                        <Grid>
+                            <TextBlock Text="Umbral superior" FontSize="13" />
+                            <TextBlock x:Name="UpperValue"
+                                       Text="80 %"
+                                       HorizontalAlignment="Right"
+                                       FontSize="13"
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource BrushAccent}" />
+                        </Grid>
+                        <Slider x:Name="UpperSlider"
+                                Style="{StaticResource DarkSlider}"
+                                Minimum="50"
+                                Maximum="100"
+                                IsSnapToTickEnabled="True"
+                                TickFrequency="1"
+                                Margin="0,6,0,0"
+                                ValueChanged="UpperSlider_ValueChanged" />
+
+                        <Grid Margin="0,16,0,0">
+                            <TextBlock Text="Umbral inferior" FontSize="13" />
+                            <TextBlock x:Name="LowerInline"
+                                       Text="40 %"
+                                       HorizontalAlignment="Right"
+                                       FontSize="13"
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource BrushAccent}" />
+                        </Grid>
+                        <Slider x:Name="LowerSlider"
+                                Style="{StaticResource DarkSlider}"
+                                Minimum="20"
+                                Maximum="95"
+                                IsSnapToTickEnabled="True"
+                                TickFrequency="1"
+                                Margin="0,6,0,0"
+                                ValueChanged="LowerSlider_ValueChanged" />
+                    </StackPanel>
+                </Border>
+
+                <TextBlock x:Name="ValidationText"
+                           Text="El umbral superior debe estar al menos 5 puntos por encima del inferior."
+                           Foreground="{StaticResource BrushAmber}"
+                           FontSize="12"
+                           TextWrapping="Wrap"
+                           Margin="0,10,0,0"
+                           Visibility="Collapsed" />
+
+                <TextBlock Text="Alertas"
+                           FontSize="13"
+                           FontWeight="SemiBold"
+                           Margin="0,20,0,8" />
+
+                <Border Style="{StaticResource CardBorder}">
+                    <StackPanel>
+                        <CheckBox x:Name="UpperAlertCheck"
+                                  Style="{StaticResource SwitchCheckBox}"
+                                  Content="Avisar al superar el umbral superior" />
+                        <CheckBox x:Name="LowerAlertCheck"
+                                  Style="{StaticResource SwitchCheckBox}"
+                                  Content="Avisar al bajar del umbral inferior"
+                                  Margin="0,14,0,0" />
+                        <CheckBox x:Name="NotificationsCheck"
+                                  Style="{StaticResource SwitchCheckBox}"
+                                  Content="Mostrar notificaciones de Windows"
+                                  Margin="0,14,0,0" />
+                        <CheckBox x:Name="AutoStartCheck"
+                                  Style="{StaticResource SwitchCheckBox}"
+                                  Content="Iniciar con Windows (en la bandeja)"
+                                  Margin="0,14,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="Frecuencia de consulta"
+                           FontSize="13"
+                           FontWeight="SemiBold"
+                           Margin="0,20,0,8" />
+
+                <StackPanel x:Name="IntervalPanel" Orientation="Horizontal">
+                    <RadioButton Content="15 s" Tag="15" Style="{StaticResource PillRadio}" />
+                    <RadioButton Content="30 s" Tag="30" Style="{StaticResource PillRadio}" />
+                    <RadioButton Content="60 s" Tag="60" Style="{StaticResource PillRadio}" />
+                    <RadioButton Content="120 s" Tag="120" Style="{StaticResource PillRadio}" />
+                </StackPanel>
+
+                <Border Background="{StaticResource BrushCardAlt}"
+                        BorderBrush="{StaticResource BrushBorder}"
+                        BorderThickness="1"
+                        CornerRadius="10"
+                        Padding="12,10"
+                        Margin="0,20,0,0">
+                    <TextBlock Text="Estas alertas no detienen la carga. El equipo no expone ninguna interfaz soportada para limitar la carga: si querés bajarla, desconectá el cargador."
+                               TextWrapping="Wrap"
+                               FontSize="12"
+                               Foreground="{StaticResource BrushMuted}" />
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="1"
+                Background="{StaticResource BrushBg}"
+                BorderBrush="{StaticResource BrushBorder}"
+                BorderThickness="0,1,0,0"
+                Padding="24,14">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Cancelar"
+                        Style="{StaticResource GhostButton}"
+                        Margin="0,0,8,0"
+                        Click="Cancel_Click" />
+                <Button Content="Guardar"
+                        Style="{StaticResource PrimaryButton}"
+                        Click="Save_Click" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

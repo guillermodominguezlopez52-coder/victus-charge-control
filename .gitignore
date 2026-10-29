@@ -1,0 +1,16 @@
+# Compilados
+bin/
+obj/
+dist/
+*.user
+*.suo
+.vs/
+TestResults/
+*.pdb
+*.dll
+*.exe
+
+# Datos locales de la aplicación
+*.log
+settings.json
+history.jsonl

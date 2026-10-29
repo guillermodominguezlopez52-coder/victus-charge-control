@@ -1,0 +1,269 @@
+<Window x:Class="VictusChargeControl.App.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Victus Charge Control"
+        Width="480"
+        Height="744"
+        MinWidth="440"
+        MinHeight="700"
+        Background="{StaticResource BrushBg}"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        FontFamily="Segoe UI Variable Text, Segoe UI"
+        TextOptions.TextFormattingMode="Display">
+
+    <Grid Margin="22,16,22,16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Encabezado -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="Victus Charge Control"
+                           FontFamily="Segoe UI Variable Display, Segoe UI"
+                           FontSize="17"
+                           FontWeight="SemiBold" />
+                <TextBlock Text="Monitor de batería · no controla la carga"
+                           Style="{StaticResource MutedText}"
+                           Margin="0,2,0,0" />
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Content="⟳"
+                        Style="{StaticResource IconButton}"
+                        Margin="0,0,6,0"
+                        ToolTip="Volver a leer la batería"
+                        Click="Refresh_Click" />
+                <Button Content="⚙"
+                        Style="{StaticResource IconButton}"
+                        ToolTip="Configuración"
+                        Click="Settings_Click" />
+            </StackPanel>
+        </Grid>
+
+        <!-- Porcentaje y estado -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,14,0,0">
+            <TextBlock Text="{Binding PercentText}"
+                       FontFamily="Segoe UI Variable Display, Segoe UI"
+                       FontSize="76"
+                       FontWeight="SemiBold"
+                       VerticalAlignment="Center" />
+            <StackPanel VerticalAlignment="Center" Margin="20,10,0,0">
+                <Border Background="{StaticResource BrushCardAlt}"
+                        BorderBrush="{StaticResource BrushBorder}"
+                        BorderThickness="1"
+                        CornerRadius="10"
+                        Padding="10,5"
+                        HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="8" Height="8"
+                                 Fill="{Binding StateBrush}"
+                                 VerticalAlignment="Center"
+                                 Margin="0,0,8,0" />
+                        <TextBlock Text="{Binding StateText}" FontSize="13" FontWeight="SemiBold" />
+                    </StackPanel>
+                </Border>
+                <TextBlock Text="{Binding AcText}" Style="{StaticResource MutedText}" Margin="2,8,0,0" />
+                <TextBlock Text="{Binding PowerText}" Style="{StaticResource MutedText}" Margin="2,2,0,0" />
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Barra con intervalo objetivo -->
+        <StackPanel Grid.Row="2" Margin="0,16,0,0">
+            <Grid Height="30">
+                <Border Background="{StaticResource BrushCardAlt}" CornerRadius="8" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{Binding LowerStar}" />
+                        <ColumnDefinition Width="{Binding BandStar}" />
+                        <ColumnDefinition Width="{Binding UpperStar}" />
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Background="#221A1C" CornerRadius="8,0,0,8" />
+                    <Border Grid.Column="1" Background="#14301F" />
+                    <Border Grid.Column="2" Background="#221A1C" CornerRadius="0,8,8,0" />
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{Binding FillStar}" />
+                        <ColumnDefinition Width="{Binding RestStar}" />
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0"
+                            Background="{StaticResource BrushAccent}"
+                            Opacity="0.72"
+                            CornerRadius="8" />
+                </Grid>
+            </Grid>
+
+            <Grid Margin="0,5,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding LowerStar}" />
+                    <ColumnDefinition Width="{Binding BandStar}" />
+                    <ColumnDefinition Width="{Binding UpperStar}" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"
+                           Text="{Binding LowerThreshold, StringFormat='{}{0} %'}"
+                           Style="{StaticResource LabelText}" />
+                <TextBlock Grid.Column="2"
+                           Text="{Binding UpperThreshold, StringFormat='{}{0} %'}"
+                           Style="{StaticResource LabelText}"
+                           HorizontalAlignment="Right" />
+            </Grid>
+
+            <TextBlock Text="{Binding ZoneText}"
+                       Style="{StaticResource MutedText}"
+                       Margin="0,6,0,0" />
+        </StackPanel>
+
+        <!-- Tarjetas de datos -->
+        <Grid Grid.Row="3" Margin="0,14,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="12" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="12" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource CardBorder}">
+                <StackPanel>
+                    <TextBlock Text="POTENCIA" Style="{StaticResource LabelText}" />
+                    <TextBlock Text="{Binding PowerText}" Style="{StaticResource ValueText}" Margin="0,4,0,0" />
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource CardBorder}">
+                <StackPanel>
+                    <TextBlock Text="SALUD" Style="{StaticResource LabelText}" />
+                    <TextBlock Text="{Binding HealthText}" Style="{StaticResource ValueText}" Margin="0,4,0,0" />
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource CardBorder}">
+                <StackPanel>
+                    <TextBlock Text="CAPACIDAD DE DISEÑO" Style="{StaticResource LabelText}" />
+                    <TextBlock Text="{Binding DesignText}" Style="{StaticResource ValueText}" Margin="0,4,0,0" />
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource CardBorder}">
+                <StackPanel>
+                    <TextBlock Text="CARGA COMPLETA" Style="{StaticResource LabelText}" />
+                    <TextBlock Text="{Binding FullText}" Style="{StaticResource ValueText}" Margin="0,4,0,0" />
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="4" Grid.Column="0" Style="{StaticResource CardBorder}">
+                <StackPanel>
+                    <TextBlock Text="CICLOS" Style="{StaticResource LabelText}" />
+                    <TextBlock Text="{Binding CyclesText}" Style="{StaticResource ValueText}" Margin="0,4,0,0" />
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="4" Grid.Column="2" Style="{StaticResource CardBorder}">
+                <StackPanel>
+                    <TextBlock Text="FUENTE" Style="{StaticResource LabelText}" />
+                    <TextBlock Text="{Binding SourceText}"
+                               Style="{StaticResource ValueText}"
+                               FontSize="13"
+                               Margin="0,4,0,0"
+                               TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Advertencia y banner -->
+        <StackPanel Grid.Row="4" Margin="0,14,0,0">
+            <Border Background="{StaticResource BrushAmberSoft}"
+                    BorderBrush="{StaticResource BrushAmber}"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Padding="12,10"
+                    Margin="0,0,0,8"
+                    Visibility="{Binding WarningVisible, Converter={StaticResource BoolToVisibility}}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="⚠"
+                               Foreground="{StaticResource BrushAmber}"
+                               FontSize="15"
+                               Margin="0,0,8,0"
+                               VerticalAlignment="Top" />
+                    <TextBlock Text="{Binding WarningText}"
+                               TextWrapping="Wrap"
+                               FontSize="12"
+                               Foreground="#F3D9A4" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <!-- Aviso de alerta y explicación de alcance -->
+        <Grid Grid.Row="5" Margin="0,12,0,0">
+            <Border VerticalAlignment="Top"
+                    Background="{StaticResource BrushAccentSoft}"
+                    BorderBrush="{StaticResource BrushAccent}"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Padding="12,10"
+                    Visibility="{Binding BannerVisible, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Text="{Binding BannerText}"
+                           TextWrapping="Wrap"
+                           FontSize="12"
+                           Foreground="#C9DCF8" />
+            </Border>
+
+            <Border VerticalAlignment="Bottom"
+                    Background="{StaticResource BrushCardAlt}"
+                    BorderBrush="{StaticResource BrushBorder}"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Padding="12,10"
+                    Visibility="{Binding InfoVisible, Converter={StaticResource BoolToVisibility}}">
+                <StackPanel>
+                    <TextBlock Text="Qué puede y qué no puede hacer esta app"
+                               FontSize="12"
+                               FontWeight="SemiBold" />
+                    <TextBlock Text="Puede leer el estado real de la batería y avisarte cuando sale del intervalo. No puede detener la carga: este equipo no expone ninguna interfaz soportada para limitarla."
+                               Style="{StaticResource MutedText}"
+                               TextWrapping="Wrap"
+                               Margin="0,5,0,0" />
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Pie -->
+        <Grid Grid.Row="6" Margin="0,14,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="{Binding LastUpdateText}" Style="{StaticResource MutedText}" />
+                <TextBlock Text="Las alertas no detienen la carga."
+                           Style="{StaticResource LabelText}"
+                           Margin="0,3,0,0" />
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Content="Historial"
+                        Style="{StaticResource GhostButton}"
+                        Margin="0,0,8,0"
+                        Click="History_Click" />
+                <Button Content="Configuración"
+                        Style="{StaticResource PrimaryButton}"
+                        Click="Settings_Click" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
